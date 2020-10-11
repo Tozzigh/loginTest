@@ -2,6 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 import os
+import json 
 from flask import Flask, request, jsonify, url_for
 from flask_migrate import Migrate
 from flask_swagger import swagger
@@ -9,9 +10,7 @@ from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
 from models import db, User
-from flask_jwt_extended import (
-    JWTManager, create_access_token
-)
+from flask_jwt_extended import (JWTManager, create_access_token) ##########
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False
@@ -21,7 +20,8 @@ MIGRATE = Migrate(app, db)
 db.init_app(app)
 CORS(app)
 setup_admin(app)
-jwt = JWTManager(app)
+
+jwt = JWTManager(app) ##########
 
 @app.errorhandler(APIException)
 def handle_invalid_usage(error):
@@ -32,11 +32,13 @@ def sitemap():
     return generate_sitemap(app)
 
 @app.route('/login', methods=['POST'])
-def login():
-    if not request.is_json:
+def login():    
+    body = request.headers["body"]
+    body = json.loads(body) 
+    if not body:
         return jsonify({"msg": "Missing JSON in request"}), 400
-    username = request.json.get('username', None)
-    password = request.json.get('password', None)
+    username = body["username"]
+    password = body["password"]
     if not username:
         return jsonify({"msg": "Missing username parameter"}), 400
     if not password:

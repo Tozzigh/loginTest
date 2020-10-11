@@ -9,12 +9,13 @@ class User(db.Model):
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
 
     def __repr__(self):
-        return '<User %r>' % self.username
+        return '<Useeeeeeeeeeeeeeeeeeeeeeer %r>' % self.username
 
     def serialize(self):
         return {
             "id": self.id,
-            "username": self.username
+            "username": self.username,
+            "is_active": self.is_active
         }
     
     @staticmethod
