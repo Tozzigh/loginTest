@@ -10,7 +10,12 @@ from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
 from models import db, User
-from flask_jwt_extended import (JWTManager, create_access_token) ##########
+from flask_jwt_extended import (JWTManager, create_access_token) ########## get_jwt_identity() >>> check if token in database
+
+#app.config['JWT_SECRET_KEY'] = 'super-secret'
+#app.config['JWT_BLACKLIST_'] = True
+#app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
+#app.config['JWT_ACCESS_TOKEN_EXPIRES'] = 999999
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False
